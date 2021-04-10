@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class MemberUpdateDto {
 
-    private String nickname;
+    private String userId;
 
     private String stack;
 }

@@ -7,11 +7,9 @@ import javax.persistence.Column;
 @Getter
 public class SignupRequestDto {
 
-    private String username;
+    private String userId;
 
     private String password;
-
-    private String nickname;
 
     private String stack;
 }
