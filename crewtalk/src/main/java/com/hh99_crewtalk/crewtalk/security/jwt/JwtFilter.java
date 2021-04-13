@@ -17,6 +17,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends GenericFilterBean {
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String TYPE_PREFIX = "Bearer ";
+
     private final JwtProvider tokenProvider;
 
     @Override
@@ -40,9 +43,6 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        final String AUTHORIZATION_HEADER = "Authorization";
-        final String TYPE_PREFIX = "Bearer ";
-
         // JwtToken은 http 요청 헤더의 Authorization필드에 담겨져 옵니다.
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
