@@ -46,9 +46,21 @@ public class ArticleController {
     }
 
     //게시물 수정
-    @PutMapping("/api/article/{id}")
-    public Long updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto){
-        return articleService.updateArticle(id, articleUpdateRequestDto);
+    @PutMapping(value = "/api/article/{id}", produces = "application/json")
+    public ResponseEntity<String> updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto) {
+        try {
+            Article article = articleService.findArticleById(id);
+            article.updateArticle(articleUpdateRequestDto);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", article.getId());
+
+            return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
+
+            return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.FORBIDDEN);
+        }
     }
 
     //게시물 삭제
