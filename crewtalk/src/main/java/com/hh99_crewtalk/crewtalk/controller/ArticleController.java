@@ -3,13 +3,15 @@ package com.hh99_crewtalk.crewtalk.controller;
 import com.hh99_crewtalk.crewtalk.domain.Article;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
-import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
+import com.hh99_crewtalk.crewtalk.dto.MessageResponseDto;
 import com.hh99_crewtalk.crewtalk.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,10 +25,18 @@ public class ArticleController {
         return articleService.findAllArticle();
     }
 
-    //게시물 전체 조회 - 최신순
-    @GetMapping("/api/article/{id}")
-    public Optional<Article> findArticleById (@PathVariable Long id){
-        return articleService.findArticleById(id);
+    // 특정 게시물 조회
+    @GetMapping(value = "/api/article/{id}", produces = "application/json")
+    public ResponseEntity<String> findArticleById(@PathVariable Long id) {
+        try {
+            Article article = articleService.findArticleById(id);
+
+            return new ResponseEntity<>(new JSONObject(article).toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
+
+            return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     //게시물 작성

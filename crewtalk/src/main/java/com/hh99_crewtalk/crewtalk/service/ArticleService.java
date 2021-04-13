@@ -3,15 +3,13 @@ package com.hh99_crewtalk.crewtalk.service;
 import com.hh99_crewtalk.crewtalk.domain.Article;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
+import com.hh99_crewtalk.crewtalk.exception.InvalidArticleIdException;
 import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +23,8 @@ public class ArticleService {
     }
 
     @Transactional
-    public Optional<Article> findArticleById(Long id){
-        return articleRepository.findById(id);
+    public Article findArticleById(Long id) {
+        return articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
     }
 
 
