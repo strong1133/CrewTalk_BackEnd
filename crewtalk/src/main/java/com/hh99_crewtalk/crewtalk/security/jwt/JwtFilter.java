@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends GenericFilterBean {
-    private final JwtTokenProvider tokenProvider;
+    private final JwtProvider tokenProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

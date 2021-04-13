@@ -16,13 +16,13 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
     private final String secret;
     private final long tokenValidityInMilliseconds;
 
     private Key key;
 
-    public JwtTokenProvider(
+    public JwtProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.secret = secret;

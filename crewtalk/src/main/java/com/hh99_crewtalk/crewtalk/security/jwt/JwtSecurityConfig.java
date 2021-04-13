@@ -7,7 +7,7 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 
 @RequiredArgsConstructor
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-    private final JwtTokenProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void configure(HttpSecurity builder) {
