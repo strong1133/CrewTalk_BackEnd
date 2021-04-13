@@ -28,14 +28,14 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String stack;
 
-    public Article(ArticleRequestDto articleRequestDto){
+    public Article(ArticleRequestDto articleRequestDto) {
         this.title = articleRequestDto.getTitle();
         this.contents = articleRequestDto.getContents();
         this.author = articleRequestDto.getAuthor();
         this.stack = articleRequestDto.getStack();
     }
 
-    public void updateArticle(ArticleUpdateRequestDto articleUpdateRequestDto){
+    public void updateArticle(ArticleUpdateRequestDto articleUpdateRequestDto) {
         this.title = articleUpdateRequestDto.getTitle();
         this.contents = articleUpdateRequestDto.getContents();
     }

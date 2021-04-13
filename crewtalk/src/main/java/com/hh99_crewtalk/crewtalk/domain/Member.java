@@ -3,7 +3,9 @@ package com.hh99_crewtalk.crewtalk.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hh99_crewtalk.crewtalk.dto.MemberUpdateDto;
 import com.hh99_crewtalk.crewtalk.dto.SignupRequestDto;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
