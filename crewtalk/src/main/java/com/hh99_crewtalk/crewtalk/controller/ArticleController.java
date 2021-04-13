@@ -21,7 +21,7 @@ public class ArticleController {
 
     //게시물 전체 조회 - 최신순
     @GetMapping("/api/article")
-    public List<Article> findAllArticle (){
+    public List<Article> findAllArticle() {
         return articleService.findAllArticle();
     }
 
@@ -41,7 +41,7 @@ public class ArticleController {
 
     //게시물 작성
     @PostMapping("/api/article")
-    public Article createArticle(@RequestBody ArticleRequestDto articleRequestDto){
+    public Article createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
         return articleService.createArticle(articleRequestDto);
     }
 
@@ -65,7 +65,7 @@ public class ArticleController {
 
     //게시물 삭제
     @DeleteMapping("/api/article/{id}")
-    public Long deleteArticle(@PathVariable Long id){
+    public Long deleteArticle(@PathVariable Long id) {
         return articleService.deleteArticle(id);
     }
 
