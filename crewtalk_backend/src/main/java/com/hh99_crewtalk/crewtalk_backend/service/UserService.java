@@ -10,13 +10,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final PasswordEncoder passwordEncoder;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final SignupRepository signupRepository;
     private static final String SCERET_KEY="AWDSDV+/asdwzwr3434@#$vvadflf00ood/[das";
 
@@ -51,5 +53,19 @@ public class UserService {
         User user = new User(signupRequestDto);
         System.out.println("user : "+ user);
         return user;
+
     }
+
+    //전체 유저 조회
+    @Transactional
+    public List<User> findAllUser() {
+        return userRepository.findAll();
+    }
+
+    // 스택별 유저 조회
+    @Transactional
+    public List<User> findAllUserByStack(String stack) {
+        return userRepository.findAllByStack(stack);
+    }
+
 }

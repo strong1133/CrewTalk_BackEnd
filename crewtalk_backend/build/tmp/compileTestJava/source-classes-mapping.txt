@@ -1,0 +1,2 @@
+com/hh99_crewtalk/crewtalk_backend/CrewtalkBackendApplicationTests.java
+ com.hh99_crewtalk.crewtalk_backend.CrewtalkBackendApplicationTests

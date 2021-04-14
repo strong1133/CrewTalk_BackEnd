@@ -26,7 +26,7 @@ public class SignupController {
     private final UserRepository userRepository;
     private final SignupRepository signupRepository;
 
-    @PostMapping("/api/signup")
+    @PostMapping("/api/user/signup")
     public User registerUser(@RequestBody SignupRequestDto signupRequestDto) {
         User user = userService.registerUser(signupRequestDto);
         System.out.println(user);

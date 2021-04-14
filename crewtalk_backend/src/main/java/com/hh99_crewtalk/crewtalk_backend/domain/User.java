@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hh99_crewtalk.crewtalk_backend.dto.SignupRequestDto;
 import lombok.Data;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class User extends Timestamped{
     @Column(nullable = false)
     private String username;
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
     @Column(nullable = false)
     private String name;
