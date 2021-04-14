@@ -20,7 +20,7 @@ public class JwtProvider {
     private final String secret;
     private final long tokenValidityInMilliseconds;
 
-    private Key key;
+    private final Key key;
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret,
