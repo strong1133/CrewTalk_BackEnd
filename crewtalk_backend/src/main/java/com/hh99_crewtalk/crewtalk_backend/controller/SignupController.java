@@ -38,7 +38,7 @@ public class SignupController {
     public User finduser(Authentication authentication ) {
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         Long id = principalDetails.getUser().getId();
-        System.out.println("id:"+id);
+
         User user = userRepository.findById(id).orElseThrow(
                 ()-> new NullPointerException("No")
         );
