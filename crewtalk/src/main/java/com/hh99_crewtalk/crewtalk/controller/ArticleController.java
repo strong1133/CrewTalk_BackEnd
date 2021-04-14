@@ -17,13 +17,19 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    //통신 테스트용
+    @GetMapping("/api/hello")
+    public String hello (){
+        return "hello";
+    }
+
     //게시물 전체 조회 - 최신순
-    @GetMapping("/api/article")
+    @GetMapping("/api/article/all")
     public List<Article> findAllArticle (){
         return articleService.findAllArticle();
     }
 
-    //게시물 전체 조회 - 최신순
+    //특정 코드 조회
     @GetMapping("/api/article/{id}")
     public Optional<Article> findArticleById (@PathVariable Long id){
         return articleService.findArticleById(id);
