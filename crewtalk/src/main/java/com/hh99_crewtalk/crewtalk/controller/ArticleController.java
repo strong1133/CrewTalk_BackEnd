@@ -4,6 +4,8 @@ import com.hh99_crewtalk.crewtalk.domain.Article;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.MessageResponseDto;
+import com.hh99_crewtalk.crewtalk.exception.NotAuthenticatedClientException;
+import com.hh99_crewtalk.crewtalk.security.SecurityUtil;
 import com.hh99_crewtalk.crewtalk.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -42,7 +44,8 @@ public class ArticleController {
     //게시물 작성
     @PostMapping("/api/article")
     public Article createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
-        return articleService.createArticle(articleRequestDto);
+        String currentRequestUsername = SecurityUtil.getCurrentRequestUserId().orElseThrow(() -> new NotAuthenticatedClientException());
+        return articleService.createArticle(articleRequestDto, currentRequestUsername);
     }
 
     //게시물 수정

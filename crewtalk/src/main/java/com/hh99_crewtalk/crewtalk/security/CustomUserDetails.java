@@ -7,6 +7,6 @@ import java.util.ArrayList;
 public class CustomUserDetails extends org.springframework.security.core.userdetails.User {
 
     public CustomUserDetails(Member member) {
-        super(member.getUserId(), member.getPassword(), new ArrayList<>(0));
+        super(member.getUsername(), member.getPassword(), new ArrayList<>(0));
     }
 }

@@ -22,17 +22,14 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
-    @Column(nullable = false)
-    private String stack;
-
-    public Article(ArticleRequestDto articleRequestDto) {
+    public Article(ArticleRequestDto articleRequestDto, Member member) {
         this.title = articleRequestDto.getTitle();
         this.contents = articleRequestDto.getContents();
-        this.author = articleRequestDto.getAuthor();
-        this.stack = articleRequestDto.getStack();
+        this.member = member;
     }
 
     public void updateArticle(ArticleUpdateRequestDto articleUpdateRequestDto) {

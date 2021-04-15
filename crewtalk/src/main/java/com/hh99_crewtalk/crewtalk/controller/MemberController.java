@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     //회원가입 (단순)
-    @PostMapping("/api/user/signup")
+    @PostMapping("/api/signup")
     public Member createUser(@RequestBody SignupRequestDto signupRequestDto) {
         return memberService.createUser(signupRequestDto);
     }

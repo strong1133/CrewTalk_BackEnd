@@ -1,10 +1,13 @@
 package com.hh99_crewtalk.crewtalk.service;
 
 import com.hh99_crewtalk.crewtalk.domain.Article;
+import com.hh99_crewtalk.crewtalk.domain.Member;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.exception.InvalidArticleIdException;
+import com.hh99_crewtalk.crewtalk.exception.InvalidUsernameException;
 import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
+import com.hh99_crewtalk.crewtalk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
+
+    private final MemberRepository memberRepository;
 
     //게시물 전체 조회 - 최신순
     @Transactional
@@ -30,8 +35,10 @@ public class ArticleService {
 
     //게시물 작성
     @Transactional
-    public Article createArticle(ArticleRequestDto articleRequestDto) {
-        Article article = new Article(articleRequestDto);
+    public Article createArticle(ArticleRequestDto articleRequestDto, String userId) {
+        Member currentRequestMember = memberRepository.findByUsername(userId).orElseThrow(() -> new InvalidUsernameException());
+
+        Article article = new Article(articleRequestDto, currentRequestMember);
         return articleRepository.save(article);
     }
 
