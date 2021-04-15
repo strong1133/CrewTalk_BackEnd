@@ -9,6 +9,7 @@ import com.hh99_crewtalk.crewtalk.exception.NotAuthenticatedClientException;
 import com.hh99_crewtalk.crewtalk.security.SecurityUtil;
 import com.hh99_crewtalk.crewtalk.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,11 @@ public class ArticleController {
     private final ArticleService articleService;
 
     //게시물 전체 조회 - 최신순
-    @GetMapping("/api/article")
-    public List<ArticleResponseDto> getAllArticle() {
-        return articleService.getAllArticle();
+    @GetMapping(value = "/api/article", produces = "application/json")
+    public ResponseEntity<String> getAllArticle() {
+        List<ArticleResponseDto> articleResponseDtoList = articleService.getAllArticle();
+
+        return new ResponseEntity<>(new JSONArray(articleResponseDtoList).toString(), HttpStatus.OK);
     }
 
     // 특정 게시물 조회
