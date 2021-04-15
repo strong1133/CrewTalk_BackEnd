@@ -2,6 +2,7 @@ package com.hh99_crewtalk.crewtalk.controller;
 
 import com.hh99_crewtalk.crewtalk.domain.Article;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
+import com.hh99_crewtalk.crewtalk.dto.ArticleResponseDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.MessageResponseDto;
 import com.hh99_crewtalk.crewtalk.exception.NotAuthenticatedClientException;
@@ -32,8 +33,9 @@ public class ArticleController {
     public ResponseEntity<String> getArticleDetail(@PathVariable Long id) {
         try {
             Article article = articleService.getArticleById(id);
+            ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
 
-            return new ResponseEntity<>(new JSONObject(article).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(new JSONObject(articleResponseDto).toString(), HttpStatus.OK);
         } catch (Exception e) {
             MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
 
