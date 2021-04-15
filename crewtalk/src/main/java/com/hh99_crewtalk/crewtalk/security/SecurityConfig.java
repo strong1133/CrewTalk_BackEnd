@@ -1,5 +1,8 @@
 package com.hh99_crewtalk.crewtalk.security;
 
+import com.hh99_crewtalk.crewtalk.security.jwt.JwtProvider;
+import com.hh99_crewtalk.crewtalk.security.jwt.JwtSecurityConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,8 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtProvider jwtProvider;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -41,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 그 외 주소들은 인증이 필요하도록 설정합니다.
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+
+                // JwtFilter 적용
+                .and()
+                .apply(new JwtSecurityConfig(jwtProvider));
     }
 }
