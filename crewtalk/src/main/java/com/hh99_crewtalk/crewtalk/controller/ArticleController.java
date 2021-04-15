@@ -24,7 +24,7 @@ public class ArticleController {
 
     //게시물 전체 조회 - 최신순
     @GetMapping("/api/article")
-    public List<Article> getAllArticle() {
+    public List<ArticleResponseDto> getAllArticle() {
         return articleService.getAllArticle();
     }
 
