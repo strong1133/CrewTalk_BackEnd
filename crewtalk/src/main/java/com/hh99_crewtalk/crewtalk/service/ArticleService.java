@@ -23,12 +23,12 @@ public class ArticleService {
 
     //게시물 전체 조회 - 최신순
     @Transactional
-    public List<Article> findAllArticle() {
+    public List<Article> getAllArticle() {
         return articleRepository.findAllByOrderByModifiedAt();
     }
 
     @Transactional
-    public Article findArticleById(Long id) {
+    public Article getArticleById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
     }
 

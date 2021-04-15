@@ -23,15 +23,15 @@ public class ArticleController {
 
     //게시물 전체 조회 - 최신순
     @GetMapping("/api/article")
-    public List<Article> findAllArticle() {
-        return articleService.findAllArticle();
+    public List<Article> getAllArticle() {
+        return articleService.getAllArticle();
     }
 
     // 특정 게시물 조회
     @GetMapping(value = "/api/article/{id}", produces = "application/json")
-    public ResponseEntity<String> findArticleById(@PathVariable Long id) {
+    public ResponseEntity<String> getArticleDetail(@PathVariable Long id) {
         try {
-            Article article = articleService.findArticleById(id);
+            Article article = articleService.getArticleById(id);
 
             return new ResponseEntity<>(new JSONObject(article).toString(), HttpStatus.OK);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class ArticleController {
     @PutMapping(value = "/api/article/{id}", produces = "application/json")
     public ResponseEntity<String> updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto) {
         try {
-            Article article = articleService.findArticleById(id);
+            Article article = articleService.getArticleById(id);
             article.updateArticle(articleUpdateRequestDto);
 
             JSONObject jsonObject = new JSONObject();
