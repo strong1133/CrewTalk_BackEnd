@@ -19,24 +19,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    //통신 테스트용
-    @GetMapping("/api/hello")
-    public String hello (){
-        return "hello";
-    }
-
     //게시물 전체 조회 - 최신순
-<<<<<<< HEAD
-    @GetMapping("/api/article/all")
-    public List<Article> findAllArticle (){
-        return articleService.findAllArticle();
-    }
-
-    //특정 코드 조회
-    @GetMapping("/api/article/{id}")
-    public Optional<Article> findArticleById (@PathVariable Long id){
-        return articleService.findArticleById(id);
-=======
     @GetMapping("/api/article")
     public List<Article> findAllArticle() {
         return articleService.findAllArticle();
@@ -54,7 +37,6 @@ public class ArticleController {
 
             return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.BAD_REQUEST);
         }
->>>>>>> 6823d90c8e96274bc23d19e21a95da38d2d91694
     }
 
     //게시물 작성
