@@ -44,7 +44,7 @@ public class ArticleController {
     //게시물 작성
     @PostMapping("/api/article")
     public Article createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
-        String currentRequestUsername = SecurityUtil.getCurrentRequestUserId().orElseThrow(() -> new NotAuthenticatedClientException());
+        String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
         return articleService.createArticle(articleRequestDto, currentRequestUsername);
     }
 

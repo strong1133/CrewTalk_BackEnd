@@ -30,6 +30,7 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String stack;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Article> articleList;
 

@@ -54,9 +54,9 @@ public class JwtProvider {
         ArrayList<GrantedAuthority> emptyAuthorities = new ArrayList<>(0);
 
         // token으로부터 user정보를 가져올 때에는 비밀번호를 사용하지 않습니다.
-        // 오로지 token에 있는 userId만으로 user를 가져옵니다.
-        String userId = claims.getSubject();
-        return new UsernamePasswordAuthenticationToken(userId, null, emptyAuthorities);
+        // 오로지 token에 있는 username만으로 user를 가져옵니다.
+        String username = claims.getSubject();
+        return new UsernamePasswordAuthenticationToken(username, null, emptyAuthorities);
     }
 
     public boolean validateToken(String token) {

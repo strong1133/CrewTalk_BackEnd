@@ -35,8 +35,8 @@ public class ArticleService {
 
     //게시물 작성
     @Transactional
-    public Article createArticle(ArticleRequestDto articleRequestDto, String userId) {
-        Member currentRequestMember = memberRepository.findByUsername(userId).orElseThrow(() -> new InvalidUsernameException());
+    public Article createArticle(ArticleRequestDto articleRequestDto, String username) {
+        Member currentRequestMember = memberRepository.findByUsername(username).orElseThrow(() -> new InvalidUsernameException());
 
         Article article = new Article(articleRequestDto, currentRequestMember);
         return articleRepository.save(article);

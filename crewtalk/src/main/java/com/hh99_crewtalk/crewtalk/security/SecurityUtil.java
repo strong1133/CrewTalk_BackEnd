@@ -11,7 +11,7 @@ import java.util.Optional;
 public class SecurityUtil {
 
     /**
-     * 이번 요청을 발생시킨 사용자의 userId를 반환합니다.
+     * 이번 요청을 발생시킨 사용자의 username을 반환합니다.
      * 만약 사용자가 인증되어 있지 않은 상태라면 Optional.empty()를 반환합니다.
      * <p>
      * JwtFilter에 의해 유효한 Jwt를 전달받았을 때 SecurityContext에 Authentication 정보가 저장되는데,
@@ -19,7 +19,7 @@ public class SecurityUtil {
      *
      * @return 이번 요청을 발생시킨 사용자의 정보를 반환합니다.
      */
-    public static Optional<String> getCurrentRequestUserId() {
+    public static Optional<String> getCurrentRequestUsername() {
         // JwtFilter.doFilter에서 저장한 SecurityContext의 인증 정보를 가져옵니다.
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -28,14 +28,14 @@ public class SecurityUtil {
             return Optional.empty();
         }
 
-        String userId = null;
+        String username = null;
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-            userId = springSecurityUser.getUsername();
+            username = springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
-            userId = (String) authentication.getPrincipal();
+            username = (String) authentication.getPrincipal();
         }
 
-        return Optional.ofNullable(userId);
+        return Optional.ofNullable(username);
     }
 }

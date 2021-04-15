@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/api/auth")
     public ResponseEntity<JwtDto> authenticate(@RequestBody AuthRequestDto requestDto) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(requestDto.getUserId(), requestDto.getPassword());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword());
 
         // AuthenticationManager.authenticate 메소드를 호출할 때 그 내부에서
         // CustomUserService의 loadUserByUsername 메소드가 호출됩니다.
