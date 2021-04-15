@@ -45,9 +45,7 @@ public class ArticleService {
     //게시물 수정
     @Transactional
     public Long updateArticle(Long id, ArticleUpdateRequestDto articleUpdateRequestDto) {
-        Article article = articleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 아이디가 없습니다.")
-        );
+        Article article = articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
         article.updateArticle(articleUpdateRequestDto);
         return article.getId();
     }
