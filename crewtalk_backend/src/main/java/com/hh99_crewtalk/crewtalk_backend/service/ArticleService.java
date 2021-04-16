@@ -26,7 +26,13 @@ public class ArticleService {
     //게시물 전체 조회 - 최신순
     @Transactional
     public List<Article> findAllArticle() {
-        return articleRepository.findAllByOrderByModifiedAt();
+        return articleRepository.findAllByOrderByModifiedAtDesc();
+    }
+
+    //게시물 - 가장 최신 게시물만 조회
+    @Transactional
+    public List<Article> findRecentArticle() {
+        return articleRepository.findTopByOrderByModifiedAtDesc();
     }
 
     @Transactional
@@ -39,7 +45,13 @@ public class ArticleService {
     @Transactional
     public Article createArticle(Authentication authentication, UserArticleRequestDto userArticleRequestDto) {
         // 헤더에서 넘겨받은 토큰을 이용해 로그인한 유저정보를 찾는다.
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        PrincipalDetails principalDetails = null;
+        try {
+            principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new NullPointerException("토큰 정보가 없습니다");
+        }
+
         // 그 중에서도 primary Key인 id값
         Long user_id = principalDetails.getUser().getId();
         System.out.println("id:" + user_id); // 잘 뽑아졌는지 확인용

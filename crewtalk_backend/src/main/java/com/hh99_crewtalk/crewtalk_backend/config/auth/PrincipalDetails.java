@@ -21,6 +21,14 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public String getPassword() {
+        System.out.println("pw :" + "진입");
+        String pw = null;
+        try {
+            pw = user.getPassword();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("로그인 정보가 잘못 되었습니다.");
+        }
+
         return user.getPassword();
     }
 

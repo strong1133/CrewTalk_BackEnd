@@ -36,6 +36,15 @@ public class ArticleController {
         return articleService.findAllArticle();
     }
 
+
+    //게시물 - 가장 최신 게시물만 조회
+    @GetMapping("/api/article/recent")
+    public List<Article> findRecentArticle (){
+        return articleService.findRecentArticle();
+    }
+
+
+
     //특정 코드 조회
     @GetMapping("/api/article/{id}")
     public Optional<Article> findArticleById (@PathVariable Long id){
@@ -45,10 +54,7 @@ public class ArticleController {
     //게시물 작성
     @PostMapping("/api/article")
     public Article createArticle(Authentication authentication, @RequestBody UserArticleRequestDto userArticleRequestDto){
-
-
         return articleService.createArticle(authentication, userArticleRequestDto);
-
     }
 
 
