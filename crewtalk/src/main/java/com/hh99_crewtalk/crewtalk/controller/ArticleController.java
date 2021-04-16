@@ -57,11 +57,11 @@ public class ArticleController {
     @PutMapping(value = "/api/article/{id}", produces = "application/json")
     public ResponseEntity<String> updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto) {
         try {
-            Article article = articleService.getArticleById(id);
-            article.updateArticle(articleUpdateRequestDto);
+            String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
+            articleService.updateArticle(id, articleUpdateRequestDto, currentRequestUsername);
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", article.getId());
+            jsonObject.put("id", id);
 
             return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
         } catch (Exception e) {

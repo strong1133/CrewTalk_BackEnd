@@ -7,6 +7,7 @@ import com.hh99_crewtalk.crewtalk.dto.ArticleResponseDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.exception.InvalidArticleIdException;
 import com.hh99_crewtalk.crewtalk.exception.InvalidUsernameException;
+import com.hh99_crewtalk.crewtalk.exception.NotAuthorizedException;
 import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +54,15 @@ public class ArticleService {
 
     //게시물 수정
     @Transactional
-    public Long updateArticle(Long id, ArticleUpdateRequestDto articleUpdateRequestDto) {
+    public Long updateArticle(Long id, ArticleUpdateRequestDto articleUpdateRequestDto, String requestedUsername) {
+        Member currentRequestMember = memberRepository.findByUsername(requestedUsername).orElseThrow(() -> new InvalidUsernameException());
+
         Article article = articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
+
+        if (article.getMember().getId() != currentRequestMember.getId()) {
+            throw new NotAuthorizedException();
+        }
+
         article.updateArticle(articleUpdateRequestDto);
         return article.getId();
     }
