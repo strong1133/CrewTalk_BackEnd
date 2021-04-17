@@ -25,8 +25,8 @@ public class ArticleController {
 
     //게시물 전체 조회 - 최신순
     @GetMapping(value = "/api/article", produces = "application/json")
-    public ResponseEntity<String> getAllArticle() {
-        List<ArticleResponseDto> articleResponseDtoList = articleService.getAllArticle();
+    public ResponseEntity<String> getAllArticle(@RequestParam(required = false) String username) {
+        List<ArticleResponseDto> articleResponseDtoList = username == null ? articleService.getAllArticle() : articleService.getArticleListByUsername(username);
 
         return new ResponseEntity<>(new JSONArray(articleResponseDtoList).toString(), HttpStatus.OK);
     }

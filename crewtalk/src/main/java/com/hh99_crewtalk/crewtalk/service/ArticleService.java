@@ -42,6 +42,19 @@ public class ArticleService {
         return articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
     }
 
+    public List<ArticleResponseDto> getArticleListByUsername(String username) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new InvalidUsernameException());
+
+        List<Article> articleList = member.getArticleList();
+
+        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>(articleList.size());
+        articleList.forEach(article -> {
+            articleResponseDtoList.add(new ArticleResponseDto(article));
+        });
+
+        return articleResponseDtoList;
+    }
+
 
     //게시물 작성
     @Transactional
