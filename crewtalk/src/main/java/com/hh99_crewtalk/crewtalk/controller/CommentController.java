@@ -16,7 +16,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @ResponseBody
-    @GetMapping("/api/comment_list")
+    @GetMapping("/api/comment")
     public List<Comment> getCommentListByArticleId(@RequestParam Long article_id) {
         List<Comment> commentList = commentService.getCommentListByArticle(article_id);
         return commentList;
