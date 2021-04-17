@@ -42,8 +42,8 @@ public class MemberController {
 
     //스택별 회원 조회
     @ResponseBody
-    @GetMapping("/api/user/{stack}")
-    public List<MemberResponseDto> findAllUserByStack(@PathVariable String stack) {
+    @GetMapping("/api/user")
+    public List<MemberResponseDto> findAllUserByStack(@RequestParam String stack) {
         return memberService.findAllUserByStack(stack);
     }
 
