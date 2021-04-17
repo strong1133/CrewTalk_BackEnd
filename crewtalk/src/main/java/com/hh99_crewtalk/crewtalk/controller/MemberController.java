@@ -3,6 +3,8 @@ package com.hh99_crewtalk.crewtalk.controller;
 import com.hh99_crewtalk.crewtalk.dto.MemberResponseDto;
 import com.hh99_crewtalk.crewtalk.dto.MessageResponseDto;
 import com.hh99_crewtalk.crewtalk.dto.SignupRequestDto;
+import com.hh99_crewtalk.crewtalk.exception.NotAuthenticatedClientException;
+import com.hh99_crewtalk.crewtalk.security.SecurityUtil;
 import com.hh99_crewtalk.crewtalk.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -18,6 +20,21 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @ResponseBody
+    @GetMapping(value = "/api/user/myinfo", produces = "application/json")
+    public ResponseEntity<String> getMyInfo() {
+        try {
+            String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
+            MemberResponseDto memberResponseDto = memberService.getUserByUsername(currentRequestUsername);
+
+            return new ResponseEntity<>(new JSONObject(memberResponseDto).toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
+
+            return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.FORBIDDEN);
+        }
+    }
 
     @ResponseBody
     @GetMapping("/api/user/{username}")
