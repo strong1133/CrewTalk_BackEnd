@@ -38,8 +38,11 @@ public class ArticleService {
     }
 
     @Transactional
-    public Article getArticleById(Long id) {
-        return articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
+    public ArticleResponseDto getArticleById(Long id) {
+        Article article = articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
+        ArticleResponseDto responseDto = new ArticleResponseDto(article);
+
+        return responseDto;
     }
 
     public List<ArticleResponseDto> getArticleListByUsername(String username) {

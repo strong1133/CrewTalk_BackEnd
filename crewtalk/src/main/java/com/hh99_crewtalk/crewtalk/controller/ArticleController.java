@@ -35,8 +35,7 @@ public class ArticleController {
     @GetMapping(value = "/api/article/{id}", produces = "application/json")
     public ResponseEntity<String> getArticleDetail(@PathVariable Long id) {
         try {
-            Article article = articleService.getArticleById(id);
-            ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
+            ArticleResponseDto articleResponseDto = articleService.getArticleById(id);
 
             return new ResponseEntity<>(new JSONObject(articleResponseDto).toString(), HttpStatus.OK);
         } catch (Exception e) {
