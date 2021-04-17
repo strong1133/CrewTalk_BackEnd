@@ -5,6 +5,7 @@ import com.hh99_crewtalk.crewtalk.domain.Member;
 import com.hh99_crewtalk.crewtalk.dto.MemberResponseDto;
 import com.hh99_crewtalk.crewtalk.dto.MemberUpdateDto;
 import com.hh99_crewtalk.crewtalk.dto.SignupRequestDto;
+import com.hh99_crewtalk.crewtalk.exception.InvalidUsernameException;
 import com.hh99_crewtalk.crewtalk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,13 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+
+    public MemberResponseDto getUserByUsername(String username) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new InvalidUsernameException());
+
+        MemberResponseDto responseDto = new MemberResponseDto(member);
+        return responseDto;
+    }
 
     //전체 유저 조회
     @Transactional
