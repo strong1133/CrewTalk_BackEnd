@@ -7,5 +7,7 @@ public class MemberUpdateDto {
 
     private String username;
 
+    private String name;
+
     private String stack;
 }

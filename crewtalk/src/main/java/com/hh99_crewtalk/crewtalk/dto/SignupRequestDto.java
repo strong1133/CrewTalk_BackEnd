@@ -7,6 +7,8 @@ public class SignupRequestDto {
 
     private String username;
 
+    private String name;
+
     private String password;
 
     private String stack;

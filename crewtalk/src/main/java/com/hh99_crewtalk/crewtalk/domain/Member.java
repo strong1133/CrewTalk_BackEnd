@@ -23,6 +23,9 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    private String name;
+
     @JsonIgnore
     @Column(nullable = false)
     private String password;
@@ -42,6 +45,7 @@ public class Member extends Timestamped {
 
     public Member(SignupRequestDto signupRequestDto) {
         this.username = signupRequestDto.getUsername();
+        this.name = signupRequestDto.getName();
         this.password = signupRequestDto.getPassword();
         this.stack = signupRequestDto.getStack();
     }
@@ -49,6 +53,7 @@ public class Member extends Timestamped {
     // 유저정보 수정
     public void updateMember(MemberUpdateDto memberUpdateDto) {
         this.username = memberUpdateDto.getUsername();
+        this.name = memberUpdateDto.getName();
         this.stack = memberUpdateDto.getStack();
     }
 
