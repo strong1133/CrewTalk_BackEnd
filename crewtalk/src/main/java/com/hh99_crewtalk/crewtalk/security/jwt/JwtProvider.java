@@ -32,6 +32,13 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * 전달한 인증 정보에 대응되는 Jwt를 반환합니다.
+     * 이 메소드는 주로 로그인을 시도했을 때, 입력한 username과 password가 유효한 경우 Jwt를 반환해주기 위해 호출됩니다.
+     *
+     * @param authentication 인증 정보입니다.
+     * @return 인증 정보에 대응되는 Jwt입니다.
+     */
     public String createToken(Authentication authentication) {
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
@@ -43,6 +50,14 @@ public class JwtProvider {
                 .compact();
     }
 
+    /**
+     * 전달한 Jwt에 대응되는 인증 정보를 반환합니다.
+     * 이 메소드는 주로 사용자 인증 정보가 필요한 요청을 받았을 때, 요청한 사용자 username정보를 토큰에서 파싱하기 위해 호출됩니다.
+     * 이 때 반환되는 Authentication의 credentials값은 무조건 비어 있습니다. Jwt에는 username밖에 담기지 않기 때문입니다.
+     *
+     * @param token 사용자가 보내온 Jwt입니다.
+     * @return Jwt에 대응되는 인증 정보입니다.
+     */
     public Authentication parseToken(String token) {
         Claims claims = Jwts
                 .parserBuilder()
@@ -59,6 +74,17 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(username, null, emptyAuthorities);
     }
 
+    /**
+     * Jwt의 유효성을 검사합니다.
+     * 이 메소드는 주로 사용자 인증 정보가 필요한 요청을 받았을 때, Jwt에서 요청한 사용자 username을 파싱하기 전에 앞서 이 Jwt가 유효한지부터 검증하기 위해 호출됩니다.
+     * Jwt가 유효하지 않는 케이스는 다음과 같습니다.
+     * 1. Jwt서명이 잘못된 경우
+     * 2. Jwt의 유효 기간이 만료된 경우
+     * 3. 지원하지 않는 Jwt 형식인 경우
+     *
+     * @param token 사용자가 보내온 Jwt입니다.
+     * @return Jwt가 유효한지에 대한 여부입니다.
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
