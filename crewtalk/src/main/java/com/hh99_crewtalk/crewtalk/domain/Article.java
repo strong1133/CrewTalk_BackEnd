@@ -1,11 +1,13 @@
 package com.hh99_crewtalk.crewtalk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hh99_crewtalk.crewtalk.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk.dto.ArticleUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -25,6 +27,11 @@ public class Article extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "article")
+    @OrderBy(value = "createdAt DESC")
+    private List<Comment> commentList;
 
     public Article(ArticleRequestDto articleRequestDto, Member member) {
         this.title = articleRequestDto.getTitle();

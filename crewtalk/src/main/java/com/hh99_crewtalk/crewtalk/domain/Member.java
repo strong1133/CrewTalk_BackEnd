@@ -32,7 +32,13 @@ public class Member extends Timestamped {
 
     @JsonIgnore
     @OneToMany(mappedBy = "member")
+    @OrderBy(value = "createdAt DESC")
     private List<Article> articleList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    @OrderBy(value = "createdAt DESC")
+    private List<Comment> commentList;
 
     public Member(SignupRequestDto signupRequestDto) {
         this.username = signupRequestDto.getUsername();
