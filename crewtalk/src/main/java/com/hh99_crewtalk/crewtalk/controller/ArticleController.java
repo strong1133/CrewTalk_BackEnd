@@ -84,8 +84,21 @@ public class ArticleController {
 
     //게시물 삭제
     @DeleteMapping("/api/article/{id}")
-    public Long deleteArticle(@PathVariable Long id) {
-        return articleService.deleteArticle(id);
+    public ResponseEntity<String> deleteArticle(@PathVariable Long id) {
+        try {
+            String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
+            articleService.deleteArticle(id, currentRequestUsername);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", id);
+
+            return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
+
+            return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.FORBIDDEN);
+        }
+
     }
 
 }

@@ -82,7 +82,13 @@ public class ArticleService {
 
     //게시물 삭제
     @Transactional
-    public Long deleteArticle(Long id) {
+    public Long deleteArticle(Long id, String username) {
+        Article article = articleRepository.findById(id).orElseThrow(() -> new InvalidArticleIdException());
+
+        if (article.getMember().getUsername() != username) {
+            throw new NotAuthorizedException();
+        }
+
         articleRepository.deleteById(id);
         return id;
     }
