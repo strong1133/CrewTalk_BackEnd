@@ -47,10 +47,21 @@ public class ArticleController {
     }
 
     //게시물 작성
-    @PostMapping("/api/article")
-    public Article createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
-        String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
-        return articleService.createArticle(articleRequestDto, currentRequestUsername);
+    @PostMapping(value = "/api/article", produces = "application/json")
+    public ResponseEntity<String> createArticle(@RequestBody ArticleRequestDto articleRequestDto) {
+        try {
+            String currentRequestUsername = SecurityUtil.getCurrentRequestUsername().orElseThrow(() -> new NotAuthenticatedClientException());
+
+            Article article = articleService.createArticle(articleRequestDto, currentRequestUsername);
+
+            ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
+            return new ResponseEntity<>(new JSONObject(articleResponseDto).toString(), HttpStatus.OK);
+        } catch (Exception e) {
+            MessageResponseDto messageResponseDto = new MessageResponseDto(e.getMessage());
+
+            return new ResponseEntity<>(new JSONObject(messageResponseDto).toString(), HttpStatus.FORBIDDEN);
+        }
+
     }
 
     //게시물 수정
