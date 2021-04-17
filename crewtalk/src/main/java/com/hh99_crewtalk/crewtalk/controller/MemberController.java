@@ -66,7 +66,7 @@ public class MemberController {
 
     //회원가입 (단순)
     @ResponseBody
-    @PostMapping("/api/signup")
+    @PostMapping("/api/user/signup")
     public MemberResponseDto createUser(@RequestBody SignupRequestDto signupRequestDto) {
         return memberService.createUser(signupRequestDto);
     }
