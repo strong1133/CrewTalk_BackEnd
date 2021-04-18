@@ -24,7 +24,10 @@ public class Article extends Timestamped {
     private String contents;
 
     @Column(nullable = false)
-    private String author;
+    private String authorId;
+
+    @Column(nullable = false)
+    private String authorName;
 
     @Column(nullable = false)
     private String stack;
@@ -32,7 +35,8 @@ public class Article extends Timestamped {
     public Article(ArticleRequestDto articleRequestDto){
         this.title = articleRequestDto.getTitle();
         this.contents = articleRequestDto.getContents();
-        this.author = articleRequestDto.getAuthor();
+        this.authorId = articleRequestDto.getAuthorId();
+        this.authorName = articleRequestDto.getAuthorName();
         this.stack = articleRequestDto.getStack();
     }
 

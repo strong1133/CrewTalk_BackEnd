@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk_backend.config;
 
+
 import com.hh99_crewtalk.crewtalk_backend.config.jwt.JwtAuthenticationFilter;
 import com.hh99_crewtalk.crewtalk_backend.config.jwt.JwtAuthorizationFilter;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
 @Configuration // DI를 위한 IOC등록
 @EnableWebSecurity // 시큐리티 적용 시작 -> 스프링 필터 체인에 등록된다.
 @RequiredArgsConstructor
@@ -19,11 +21,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsConfig corsConfig; // CorsConfig에서 만든 Filter를 사용하기 위한 DI
     private final UserRepository userRepository;
+//    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,19 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // AuthenticationManager 이녀석은 로그인 매니져라고 생각하면 되며, JwtAuthenticationFilter 이녀석이 로그인 수행 필터이기 때문에
                 // 매니저와 함께 해야 하므로 JwtAuthenticationFilter를 던져주면 된다.
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
-
                 // JwtAuthorizationFilter 로그인 할 당시 클라이언트에게 준 토큰을 이용해 이후 요청이 들어오면 토큰이 유효한
                 // 토큰인지를 검사해서 토큰에 해당하는 유저정보를 검색해준다. 유저 정보에 접근하기 위해 userRepository를 실어준다
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll() //api 사용을 허용
                 .antMatchers("/h2-console/**").permitAll() //h2 콘솔 사용을 허용
+                .antMatchers("/**").permitAll() //h2 콘솔 사용을 허용
 
                 .anyRequest().authenticated();// antMatchers 로 허용한 요청 외에는 모두 인증 요구
 
 
-
-
-
-
     }
+
+
+
 }

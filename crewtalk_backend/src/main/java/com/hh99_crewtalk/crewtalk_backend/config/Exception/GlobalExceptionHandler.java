@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk_backend.config.Exception;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -15,9 +16,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Configuration
 @ControllerAdvice
 @RestController
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler  {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -26,16 +28,5 @@ public class GlobalExceptionHandler {
         map.put("err", e.getMessage());
         return map;
     }
-
-
-    @ExceptionHandler(NullPointerException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleException (NullPointerException e){
-        Map<String, String> map = new HashMap<>();
-        map.put("err", e.getMessage());
-        return map;
-    }
-
-
 
 }

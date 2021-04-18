@@ -15,6 +15,6 @@ public class SignupValidator {
         if (pw.contains(id)) {
             return false;
         }
-        return Pattern.matches("^[A-Za-z0-9]{8,20}$", pw);
+        return Pattern.matches("^[A-Za-z0-9]{5,20}$", pw);
     }
 }

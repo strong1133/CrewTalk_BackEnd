@@ -61,12 +61,14 @@ public class ArticleService {
         );
 
         // 최종적으로 save에 이용할 DTO인 articleRequestDto에 값들을 셋팅해줌.
-        String ahtuor = user.getUsername();
+        String authorId = user.getUsername();
+        String authorName = user.getName();
         String stack = user.getStack();
         String title = userArticleRequestDto.getTitle();
         String contents = userArticleRequestDto.getContents();
         ArticleRequestDto articleRequestDto = new ArticleRequestDto();
-        articleRequestDto.setAuthor(ahtuor);
+        articleRequestDto.setAuthorId(authorId);
+        articleRequestDto.setAuthorName(authorName);
         articleRequestDto.setStack(stack);
         articleRequestDto.setTitle(title);
         articleRequestDto.setContents(contents);
@@ -97,13 +99,13 @@ public class ArticleService {
                 () -> new IllegalArgumentException("해당 아이디가 없습니다.")
         );
         // 해당 게시물의 작성자를 파악
-        String author = article.getAuthor();
+        String authorId = article.getAuthorId();
 
-        System.out.println("author:" + author); // 잘 뽑아졌는지 확인용
+        System.out.println("author:" + authorId); // 잘 뽑아졌는지 확인용
         System.out.println("cur_username:" + cur_username); // 잘 뽑아졌는지 확인용
 
         // 현재 유저와 작성자가 같다면!
-        if (!cur_username.equals(author)) {
+        if (!cur_username.equals(authorId)) {
             System.out.println("자신의 게시물만 수정 할 수 있습니다!");
             throw new IllegalArgumentException("자신의 게시물만 수정 할 수 있습니다!");
         }
@@ -133,13 +135,13 @@ public class ArticleService {
                 () -> new IllegalArgumentException("해당 아이디가 없습니다.")
         );
         // 해당 게시물의 작성자를 파악
-        String author = article.getAuthor();
+        String authorId = article.getAuthorId();
 
-        System.out.println("author:" + author); // 잘 뽑아졌는지 확인용
+        System.out.println("author:" + authorId); // 잘 뽑아졌는지 확인용
         System.out.println("cur_username:" + cur_username); // 잘 뽑아졌는지 확인용
 
         // 현재 유저와 작성자가 같다면!
-        if (!cur_username.equals(author)) {
+        if (!cur_username.equals(authorId)) {
             System.out.println("자신의 게시물만 삭제 할 수 있습니다!");
             throw new IllegalArgumentException("자신의 게시물만 삭제 할 수 있습니다!");
         }

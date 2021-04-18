@@ -11,7 +11,9 @@ public class ArticleRequestDto {
 
     private String contents;
 
-    private String author;
+    private String authorId;
+
+    private String authorName;
 
     private String stack;
 }

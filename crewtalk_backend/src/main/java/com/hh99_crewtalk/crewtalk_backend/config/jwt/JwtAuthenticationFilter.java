@@ -41,6 +41,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginRequestDto loginRequestDto = null;
         try {
             loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class); // 받아온 값들을 dto에 넣어주고
+            System.out.println("loginRequestDto :" +loginRequestDto);
         } catch (Exception e) {
             System.out.println("로그인 실패");
 
@@ -91,5 +92,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println(jwtToken);
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+
     }
 }

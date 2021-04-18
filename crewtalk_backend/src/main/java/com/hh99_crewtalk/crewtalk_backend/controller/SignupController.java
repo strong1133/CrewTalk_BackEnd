@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,11 +29,13 @@ public class SignupController {
     private final SignupRepository signupRepository;
 
     @PostMapping("/api/user/signup")
-    public User registerUser(@RequestBody SignupRequestDto signupRequestDto) {
+    public Map<String, String> registerUser(@RequestBody SignupRequestDto signupRequestDto) {
         User user = userService.registerUser(signupRequestDto);
+        Map<String, String> map = new HashMap<>();
+        map.put("Success","회원 가입이 완료 되었습니다.");
         System.out.println(user);
         signupRepository.save(user);
-        return user;
+        return map;
     }
 
     @GetMapping("/api/vi/user")

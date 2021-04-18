@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             System.out.println("토큰 없음");
             chain.doFilter(request, response);
-            throw new NullPointerException("토큰이 없습니다!");
+            return;
         }
         System.out.println("JWTheader : " + header);
         String token = request.getHeader(JwtProperties.HEADER_STRING)
