@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk.domain;
 
+import com.hh99_crewtalk.crewtalk.dto.CommentUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,5 +32,9 @@ public class Comment extends Timestamped {
         this.article = article;
         this.member = member;
         this.contents = contents;
+    }
+
+    public void update(CommentUpdateRequestDto requestDto) {
+        this.contents = requestDto.getContents();
     }
 }

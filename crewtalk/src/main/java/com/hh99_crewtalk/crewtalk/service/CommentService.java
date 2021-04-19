@@ -4,7 +4,9 @@ import com.hh99_crewtalk.crewtalk.domain.Article;
 import com.hh99_crewtalk.crewtalk.domain.Comment;
 import com.hh99_crewtalk.crewtalk.domain.Member;
 import com.hh99_crewtalk.crewtalk.dto.CommentRequestDto;
+import com.hh99_crewtalk.crewtalk.dto.CommentUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.exception.InvalidArticleIdException;
+import com.hh99_crewtalk.crewtalk.exception.InvalidCommentIdException;
 import com.hh99_crewtalk.crewtalk.exception.InvalidUsernameException;
 import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk.repository.CommentRepository;
@@ -12,6 +14,7 @@ import com.hh99_crewtalk.crewtalk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,5 +41,13 @@ public class CommentService {
         commentRepository.save(comment);
 
         return comment;
+    }
+
+    @Transactional
+    public Long updateComment(Long id, CommentUpdateRequestDto requestDto) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new InvalidCommentIdException());
+        comment.update(requestDto);
+
+        return comment.getId();
     }
 }
