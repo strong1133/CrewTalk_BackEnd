@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler  {

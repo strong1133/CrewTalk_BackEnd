@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk_backend.config.auth;
 
+import com.hh99_crewtalk.crewtalk_backend.config.Exception.GlobalExceptionHandler;
 import com.hh99_crewtalk.crewtalk_backend.domain.User;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)  {
         System.out.println("PrincipalDetailsService : 진입");
         User user = userRepository.findByUsername(username);
-
+        System.out.println("요기서 에러가 나는건가?");
         // session.setAttribute("loginUser", user);
         return new PrincipalDetails(user);
     }

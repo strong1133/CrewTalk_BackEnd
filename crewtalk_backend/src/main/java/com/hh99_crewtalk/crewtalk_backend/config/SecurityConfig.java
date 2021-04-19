@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll() //api 사용을 허용
                 .antMatchers("/h2-console/**").permitAll() //h2 콘솔 사용을 허용
-                .antMatchers("/**").permitAll() //h2 콘솔 사용을 허용
+                .antMatchers("/**").permitAll() //
 
                 .anyRequest().authenticated();// antMatchers 로 허용한 요청 외에는 모두 인증 요구
 

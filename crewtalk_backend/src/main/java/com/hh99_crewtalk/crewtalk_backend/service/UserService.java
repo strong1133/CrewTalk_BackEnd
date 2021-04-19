@@ -1,5 +1,6 @@
 package com.hh99_crewtalk.crewtalk_backend.service;
 
+import com.hh99_crewtalk.crewtalk_backend.config.auth.PrincipalDetails;
 import com.hh99_crewtalk.crewtalk_backend.domain.User;
 import com.hh99_crewtalk.crewtalk_backend.dto.SignupRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.repository.SignupRepository;
@@ -7,11 +8,14 @@ import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import com.hh99_crewtalk.crewtalk_backend.util.SignupValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -66,6 +70,14 @@ public class UserService {
     @Transactional
     public List<User> findAllUserByStack(String stack) {
         return userRepository.findAllByStack(stack);
+    }
+
+    @Transactional
+    public Optional<User> findCurUser(Authentication authentication){
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        // 그 중에서도 primary Key인 id값
+        Long user_id = principalDetails.getUser().getId();
+        return userRepository.findById(user_id);
     }
 
 }

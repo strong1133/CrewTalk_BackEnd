@@ -11,6 +11,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 public class PrincipalDetails implements UserDetails  {
 
     private User user;
@@ -20,11 +21,12 @@ public class PrincipalDetails implements UserDetails  {
     }
 
     public User getUser() {
+        System.out.println("user :" + user);
         return user;
     }
 
     @Override
-    public String getPassword () throws IllegalArgumentException {
+    public String getPassword ()  {
         System.out.println("pw :" + "진입");
         String pw = null;
         try {
@@ -39,6 +41,13 @@ public class PrincipalDetails implements UserDetails  {
 
     @Override
     public String getUsername() {
+        String id = null;
+        try {
+            id = user.getUsername();
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("로그인 정보가 잘못 되었습니다.");
+
+        }
         return user.getUsername();
     }
 

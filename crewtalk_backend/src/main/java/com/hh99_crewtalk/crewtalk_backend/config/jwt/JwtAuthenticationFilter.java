@@ -3,6 +3,7 @@ package com.hh99_crewtalk.crewtalk_backend.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hh99_crewtalk.crewtalk_backend.config.Exception.GlobalExceptionHandler;
 import com.hh99_crewtalk.crewtalk_backend.config.auth.PrincipalDetails;
 import com.hh99_crewtalk.crewtalk_backend.dto.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -41,20 +42,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginRequestDto loginRequestDto = null;
         try {
             loginRequestDto = om.readValue(request.getInputStream(), LoginRequestDto.class); // 받아온 값들을 dto에 넣어주고
-            System.out.println("loginRequestDto :" +loginRequestDto);
+            System.out.println("loginRequestDto :" + loginRequestDto);
         } catch (Exception e) {
             System.out.println("로그인 실패");
-
         }
         System.out.println("JwtAuthenticationFilter : " + loginRequestDto);
-
-
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getUsername(),
                         loginRequestDto.getPassword()); // dto에서 다시 값을 받아와 토큰을 만드는 재료로 사용
 
         System.out.println("JwtAuthenticationFilter : 토큰생성완료");
+        System.out.println("UsernamePasswordAuthenticationToken : " + authenticationToken);
 
         // authenticate() 함수가 호출 되면 인증 프로바이더가 유저 디테일 서비스의
         // loadUserByUsername(토큰의 첫번째 파라메터) 를 호출하고
@@ -66,14 +65,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // Tip: 인증 프로바이더의 디폴트 암호화 방식은 BCryptPasswordEncoder
         // 결론은 인증 프로바이더에게 알려줄 필요가 없음.
 
-        System.out.println("1");
         Authentication authentication = null;
-        System.out.println("2");
+        System.out.println("1");
+
         authentication = authenticationManager.authenticate(authenticationToken);
-        System.out.println("3");
+
+        System.out.println("2");
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
         System.out.println("Authentication : " + principalDetails.getUser().getUsername());
+        System.out.println("UsernamePasswordAuthenticationToken : " + authentication);
         return authentication;
     }
 
@@ -90,6 +91,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("username", principalDetails.getUser().getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         System.out.println(jwtToken);
+
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
 
