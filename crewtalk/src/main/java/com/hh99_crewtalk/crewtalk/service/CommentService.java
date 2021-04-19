@@ -8,6 +8,7 @@ import com.hh99_crewtalk.crewtalk.dto.CommentUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk.exception.InvalidArticleIdException;
 import com.hh99_crewtalk.crewtalk.exception.InvalidCommentIdException;
 import com.hh99_crewtalk.crewtalk.exception.InvalidUsernameException;
+import com.hh99_crewtalk.crewtalk.exception.NotAuthorizedException;
 import com.hh99_crewtalk.crewtalk.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk.repository.CommentRepository;
 import com.hh99_crewtalk.crewtalk.repository.MemberRepository;
@@ -44,8 +45,13 @@ public class CommentService {
     }
 
     @Transactional
-    public Long updateComment(Long id, CommentUpdateRequestDto requestDto) {
+    public Long updateComment(Long id, CommentUpdateRequestDto requestDto, String requestUsername) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new InvalidCommentIdException());
+
+        if (requestUsername != comment.getMember().getUsername()) {
+            throw new NotAuthorizedException();
+        }
+
         comment.update(requestDto);
 
         return comment.getId();
