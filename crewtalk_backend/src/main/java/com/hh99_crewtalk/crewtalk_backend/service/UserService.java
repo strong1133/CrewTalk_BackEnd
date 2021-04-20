@@ -7,6 +7,9 @@ import com.hh99_crewtalk.crewtalk_backend.repository.SignupRepository;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import com.hh99_crewtalk.crewtalk_backend.util.SignupValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,22 +65,33 @@ public class UserService {
 
     //전체 유저 조회
     @Transactional
-    public List<User> findAllUser() {
-        return userRepository.findAll();
+    public List<User> findAllUser(int page) {
+        Page<User> pageUsers = userRepository.findAll(PageRequest.of(page-1, 6, Sort.Direction.DESC, "modifiedAt"));
+        List<User> users = pageUsers.getContent();
+        return users;
     }
 
     // 스택별 유저 조회
     @Transactional
-    public List<User> findAllUserByStack(String stack) {
-        return userRepository.findAllByStack(stack);
+    public List<User> findAllUserByStack(String stack, int page) {
+        Page<User> pageUserByStack = userRepository.findAllByStack(stack, PageRequest.of(page-1, 6, Sort.Direction.DESC, "modifiedAt"));
+        List<User> userByStack = pageUserByStack.getContent();
+        return userByStack;
     }
 
+    // 현재 로그인한 유저 정보
     @Transactional
     public Optional<User> findCurUser(Authentication authentication){
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         // 그 중에서도 primary Key인 id값
         Long user_id = principalDetails.getUser().getId();
         return userRepository.findById(user_id);
+    }
+
+    // 특정 유저 정보 단일 조회
+    @Transactional
+    public Optional<User> findSelectedUser(Long id){
+        return userRepository.findById(id);
     }
 
 }

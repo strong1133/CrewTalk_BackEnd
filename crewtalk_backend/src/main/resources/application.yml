@@ -6,21 +6,24 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  error:
+    include-message: always
+    include-binding-errors: always
 
 spring:
   datasource:
     driver-class-name:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-  #    url: jdbc:mysql://strong1133.cfzrnnoktpkb.ap-northeast-2.rds.amazonaws.com/strong1133
-  #    username: strong1133
-  #    password: tjrwls455
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    password:
+    url: jdbc:mysql://strong1133.cfzrnnoktpkb.ap-northeast-2.rds.amazonaws.com/strong1133
+    username: strong1133
+    password: tjrwls455
 
 
   jpa:
     hibernate:
-      ddl-auto: create #create update none
+#      ddl-auto: create #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true

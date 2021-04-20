@@ -9,8 +9,13 @@ import com.hh99_crewtalk.crewtalk_backend.dto.UserArticleRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,6 +27,14 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
 
+
+    //게시물 전체 조회 + 페이징
+    @Transactional
+    public List<Article>  findAllPageArticle(int page){
+        Page<Article> pageArticles = articleRepository.findAll(PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
+        List<Article> articles =  pageArticles.getContent();
+        return articles;
+    }
 
     //게시물 전체 조회 - 최신순
     @Transactional
@@ -35,9 +48,34 @@ public class ArticleService {
         return articleRepository.findTopByOrderByModifiedAtDesc();
     }
 
+    //ArticleId 별 조회 -> 단일 건 조회
     @Transactional
     public Optional<Article> findArticleById(Long id) {
         return articleRepository.findById(id);
+    }
+
+    //스택별 게시글 조회 + 페이징
+    @Transactional
+    public List<Article> findAllArticleByStack(int page, String stack){
+        Page<Article> pageArticleByStack = articleRepository.findAllByStack(stack, PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
+        List<Article> articleByStack =  pageArticleByStack.getContent();
+        return articleByStack;
+    }
+
+    //내 게시물 조회 + 페이징
+    public List<Article> findAllAuthorId(Authentication authentication, int page){
+        // 헤더에서 넘겨받은 토큰을 이용해 로그인한 유저정보를 찾는다.
+        PrincipalDetails principalDetails = null;
+        try {
+            principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new NullPointerException("토큰 정보가 없습니다");
+        }
+
+        String cur_username = principalDetails.getUsername();
+        Page<Article> pageArticleByAuthorId = articleRepository.findAllByAuthorId(cur_username, PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
+        List<Article> articleByAuthorId =  pageArticleByAuthorId.getContent();
+        return articleByAuthorId;
     }
 
 
@@ -148,6 +186,7 @@ public class ArticleService {
         articleRepository.deleteById(id);
         return id;
     }
+
 
 
 }

@@ -1,15 +1,18 @@
 package com.hh99_crewtalk.crewtalk_backend.controller;
 
 
-import com.hh99_crewtalk.crewtalk_backend.config.auth.PrincipalDetails;
 import com.hh99_crewtalk.crewtalk_backend.domain.Article;
-import com.hh99_crewtalk.crewtalk_backend.domain.User;
-import com.hh99_crewtalk.crewtalk_backend.dto.ArticleRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.dto.UserArticleRequestDto;
+import com.hh99_crewtalk.crewtalk_backend.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import com.hh99_crewtalk.crewtalk_backend.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +28,28 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final UserRepository userRepository;
+    private final ArticleRepository articleRepository;
 
     //통신 테스트용
     @GetMapping("/api/hello")
     public String hello() {
         return "hello";
     }
+
+
+    //게시물 + 페이징
+    @GetMapping("/api/article")
+    public List<Article> responseEntity(@RequestParam int page, Pageable pageable) {
+        return articleService.findAllPageArticle(page);
+    }
+
+
+    //스택별 게시물 조회 + 페이징
+    @GetMapping("/api/article/stack")
+    public List<Article> findStackArticle(@RequestParam String stack, int page) {
+        return articleService.findAllArticleByStack(page, stack);
+    }
+
 
     //게시물 전체 조회 - 최신순
     @GetMapping("/api/article/all")
@@ -45,6 +64,11 @@ public class ArticleController {
         return articleService.findRecentArticle();
     }
 
+    //내가 작성한 게시물 전체 보기 + 페이징
+    @GetMapping("/api/article/cur_user")
+    public List<Article> findAllAuthorId(Authentication authentication, int page) {
+        return articleService.findAllAuthorId(authentication, page);
+    }
 
     //특정 코드 조회
     @GetMapping("/api/article/{id}")
