@@ -38,6 +38,12 @@ public class UserController {
         return userService.findAllUserByStack(stack, page);
     }
 
+    // 검색어가 포함된 이름을 갖는 회원 조회 + 페이징
+    @GetMapping("/api/user/search")
+    public List<User> findByNameContaining(@RequestParam String name, int page){
+        return userService.findByNameContaining(name, page);
+    }
+
     // 특정 유저 정보 단일 조회
     @GetMapping("/api/user/detail")
     public Optional<User> findSelectedUser(@RequestParam Long id){

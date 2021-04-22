@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
     Page<User> findAllByStack(String stack, Pageable PageRequest);
+    Page<User> findByNameContaining(String name, Pageable PageRequest);
 }

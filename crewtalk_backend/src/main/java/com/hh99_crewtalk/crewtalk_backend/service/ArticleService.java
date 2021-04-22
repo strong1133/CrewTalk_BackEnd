@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
@@ -60,6 +61,22 @@ public class ArticleService {
         Page<Article> pageArticleByStack = articleRepository.findAllByStack(stack, PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
         List<Article> articleByStack =  pageArticleByStack.getContent();
         return articleByStack;
+    }
+
+    //AuthorId별 게시글 조회 + 페이징
+    @Transactional
+    public List<Article> findAuthorIdArticle(int page, String authorId){
+        Page<Article> pageArticleByAuthorId = articleRepository.findAllByAuthorId(authorId, PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
+        List<Article> articleByAuthorId =  pageArticleByAuthorId.getContent();
+        return articleByAuthorId;
+    }
+
+    // 검색어가 포함된 이름을 갖는 게시물 조회 + 페이징
+    @Transactional
+    public List<Article> findByArticleAuthorNameContaining(String authorName, int page){
+        Page<Article> pageArticleByAuthorName = articleRepository.findByAuthorNameContaining(authorName, PageRequest.of(page-1, 5, Sort.Direction.DESC, "modifiedAt"));
+        List<Article> articleByAuthorName = pageArticleByAuthorName.getContent();
+        return articleByAuthorName;
     }
 
     //내 게시물 조회 + 페이징

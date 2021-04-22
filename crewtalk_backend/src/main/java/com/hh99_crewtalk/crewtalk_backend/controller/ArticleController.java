@@ -2,6 +2,7 @@ package com.hh99_crewtalk.crewtalk_backend.controller;
 
 
 import com.hh99_crewtalk.crewtalk_backend.domain.Article;
+import com.hh99_crewtalk.crewtalk_backend.domain.User;
 import com.hh99_crewtalk.crewtalk_backend.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.dto.UserArticleRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.repository.ArticleRepository;
@@ -50,6 +51,17 @@ public class ArticleController {
         return articleService.findAllArticleByStack(page, stack);
     }
 
+    //authorId별 게시물 조회 + 페이징
+    @GetMapping("/api/article/authorId")
+    public List<Article> findAuthorIdArticle(@RequestParam String authorId, int page) {
+        return articleService.findAuthorIdArticle(page, authorId);
+    }
+
+    // 검색어가 포함된 이름을 갖는 게시물 조회 + 페이징
+    @GetMapping("/api/article/search")
+    public List<Article> findByArticleNameContaining(@RequestParam String authorName, int page){
+        return articleService.findByArticleAuthorNameContaining(authorName, page);
+    }
 
     //게시물 전체 조회 - 최신순
     @GetMapping("/api/article/all")

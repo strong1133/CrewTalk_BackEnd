@@ -79,6 +79,13 @@ public class UserService {
         return userByStack;
     }
 
+    @Transactional
+    public List<User> findByNameContaining(String name, int page){
+        Page<User> pageUserByNameContain = userRepository.findByNameContaining(name, PageRequest.of(page-1, 6, Sort.Direction.DESC, "modifiedAt"));
+        List<User> userByNameContain = pageUserByNameContain.getContent();
+        return userByNameContain;
+    }
+
     // 현재 로그인한 유저 정보
     @Transactional
     public Optional<User> findCurUser(Authentication authentication){
