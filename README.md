@@ -37,8 +37,8 @@
 
 ## 🦄 프로젝트 썸네일
 
-<p align="center">
-<img src="https://github.com/strong1133/MyPL/blob/main/sample/mypl01.JPG?raw=true" width="70%"></img>
+<p align="">
+<img src="https://github.com/strong1133/CrewTalk_BackEnd/blob/main/img/%EC%8D%B8%EB%84%A4%EC%9D%BC.png?raw=true" width="70%"></img>
 </p>
 
 </br>
