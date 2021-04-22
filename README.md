@@ -16,7 +16,7 @@
 
 📁 <a href="https://github.com/delilah1004">프론트 앤드 Git Hub</a>
 
-📁 <a href="https://github.com/strong1133/CrewTalk_BackEnd/tree/main/img">백 앤드 Git Hub</a>
+📁 <a href="https://github.com/strong1133/CrewTalk_BackEnd">백 앤드 Git Hub</a>
 
 </br>
 
