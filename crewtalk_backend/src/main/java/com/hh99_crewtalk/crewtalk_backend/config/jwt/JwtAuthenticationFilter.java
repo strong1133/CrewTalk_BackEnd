@@ -46,7 +46,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (Exception e) {
             System.out.println("로그인 실패");
         }
+        // JwtAuthenticationFilter에 위에서 담아준 loginRequestDto가 잘 물렸는지 확인
         System.out.println("JwtAuthenticationFilter : " + loginRequestDto);
+
+        //loginRequestDto 의 값들로 임시 토큰을 만듬 -> 인증 안된 토큰
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getUsername(),
@@ -65,14 +68,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // Tip: 인증 프로바이더의 디폴트 암호화 방식은 BCryptPasswordEncoder
         // 결론은 인증 프로바이더에게 알려줄 필요가 없음.
 
+        //authentication에 위에서 임시로 만든 토큰을 물려줌
         Authentication authentication = null;
-        System.out.println("1");
-
         authentication = authenticationManager.authenticate(authenticationToken);
 
-        System.out.println("2");
+        // loadUserByUsername에 authentication를 던져줌 -> UserDetails까지 들어가서 credential와 UserDetails(DB값)의 getPassword()함수로 비교.
+        // 동일하면 Authentication 객체를 만들어서 리턴
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-
         System.out.println("Authentication : " + principalDetails.getUser().getUsername());
         System.out.println("UsernamePasswordAuthenticationToken : " + authentication);
         return authentication;
@@ -82,8 +84,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+
+        // DB매칭에 성공한 Authentication를 authResult에 담아줌.
+        // authResult.getPrincipal() 를 통해 authResult에서 인증 정보를 뽑아옴.
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
+        // authResult에서 가져온 인증정보를 이용해 JWT토큰을 만들어 줄 것임.
         String jwtToken = JWT.create()
                 .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
@@ -92,7 +98,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         System.out.println(jwtToken);
 
-
+        // 만들어진 토큰을 응답 헤더에 실어준다.
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
 
     }

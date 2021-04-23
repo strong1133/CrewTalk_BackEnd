@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
         System.out.println("JWTheader : " + header);
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX, "");
+                .replace(JwtProperties.TOKEN_PREFIX, ""); // 토큰 앞에 Barer 를 떼어주는 역활
         System.out.println("token : " + token);
 
         // 토큰 검증 (이게 인증이기 때문에 AuthenticationManager도 필요 없음)

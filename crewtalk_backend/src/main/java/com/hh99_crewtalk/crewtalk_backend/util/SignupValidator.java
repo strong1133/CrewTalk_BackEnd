@@ -3,6 +3,7 @@ package com.hh99_crewtalk.crewtalk_backend.util;
 
 import java.util.regex.Pattern;
 
+// 정규식 검사 클래스
 public class SignupValidator {
 
     //Id

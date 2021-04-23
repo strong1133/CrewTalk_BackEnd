@@ -15,24 +15,20 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/login")
-    public String login(){
-        return "로그인";
-    }
 
-    //현재 로그인한 유저 정보
+    //현재 로그인한 유저 정보 + 인가
     @GetMapping("/api/user/cur_user")
     public Optional<User> findCurUser(Authentication authentication){
         return userService.findCurUser(authentication);
     }
 
-    //회원 전체 조회
+    //회원 전체 조회  + 페이징
     @GetMapping("/api/user/all")
     public List<User> findAllUser(@RequestParam int page) {
         return userService.findAllUser(page);
     }
 
-    //스택별 회원 조회
+    //스택별 회원 조회 + 페이징
     @GetMapping("/api/user")
     public List<User> findAllUserByStack(@RequestParam String stack, int page) {
         return userService.findAllUserByStack(stack, page);

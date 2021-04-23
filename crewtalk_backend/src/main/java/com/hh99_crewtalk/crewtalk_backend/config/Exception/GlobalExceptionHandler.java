@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@ControllerAdvice // Controller 요청에 대해서 에러가 발생한 응답을 캐치해줌
 @RestController
 public class GlobalExceptionHandler  {
 
     @ExceptionHandler(value = Exception.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST) // GlobalExceptionHandler에서 낚아챈 에러를 모두 400 에러로 만듬.
     public Map<String, String> handleException (Exception e){
-        Map<String, String> map = new HashMap<>();
-        map.put("err", e.getMessage());
+        Map<String, String> map = new HashMap<>(); // 에러메시지를 JSON 형태로 반환
+        map.put("err", e.getMessage()); // 에러 발생시 throws 한 에러 메세지를 받아옴.
         return map;
     }
 

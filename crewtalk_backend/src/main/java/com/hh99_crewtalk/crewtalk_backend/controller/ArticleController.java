@@ -2,18 +2,13 @@ package com.hh99_crewtalk.crewtalk_backend.controller;
 
 
 import com.hh99_crewtalk.crewtalk_backend.domain.Article;
-import com.hh99_crewtalk.crewtalk_backend.domain.User;
 import com.hh99_crewtalk.crewtalk_backend.dto.ArticleUpdateRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.dto.UserArticleRequestDto;
 import com.hh99_crewtalk.crewtalk_backend.repository.ArticleRepository;
 import com.hh99_crewtalk.crewtalk_backend.repository.UserRepository;
 import com.hh99_crewtalk.crewtalk_backend.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,7 +71,7 @@ public class ArticleController {
         return articleService.findRecentArticle();
     }
 
-    //내가 작성한 게시물 전체 보기 + 페이징
+    //내가 작성한 게시물 전체 보기 + 페이징, 인가
     @GetMapping("/api/article/cur_user")
     public List<Article> findAllAuthorId(Authentication authentication, int page) {
         return articleService.findAllAuthorId(authentication, page);
@@ -89,14 +84,14 @@ public class ArticleController {
     }
 
 
-    //게시물 작성
+    //게시물 작성 + 인가
     @PostMapping("/api/article")
     public Article createArticle(Authentication authentication, @RequestBody UserArticleRequestDto userArticleRequestDto) {
         return articleService.createArticle(authentication, userArticleRequestDto);
     }
 
 
-    //게시물 수정
+    //게시물 수정 + 인가
     @PutMapping("/api/article/{id}")
     public Map<String, String> updateArticle(Authentication authentication, @PathVariable Long id, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto) {
         articleService.updateArticle(authentication, id, articleUpdateRequestDto);
@@ -106,7 +101,7 @@ public class ArticleController {
     }
 
 
-    //게시물 삭제
+    //게시물 삭제 + 인가
     @DeleteMapping("/api/article/{id}")
     public Map<String, String> deleteArticle(Authentication authentication, @PathVariable Long id) {
         articleService.deleteArticle(authentication, id);

@@ -10,15 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -50,7 +47,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호 형식이 올바르지 않습니다!");
         }
         //정규식 통과한 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(signupRequestDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(lawPassword + SCERET_KEY);
 
         signupRequestDto.setUsername(username);
         signupRequestDto.setPassword(encodedPassword);

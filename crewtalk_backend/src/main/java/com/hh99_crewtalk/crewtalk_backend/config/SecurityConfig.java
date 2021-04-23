@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    // 비밀번호 암호화를 위한 DI
 
 
     @Override
@@ -37,26 +38,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsConfig.corsFilter()) // Cors필터링 -> 모든 요청은 이 필터를 거치게 되며 필터에서 모두 허용해줌으로 cors에러 방지
                 // CrossOrigin 과의 차이점 :: CrossOrigin은 인증이 필요한 요청은 커버를 할 수 없음.
 
-                .csrf().disable() // 토큰 만으로 요청을 보낼 수 있으면 보안상 취약함으로 헤더를 통해 요청해야만 하게끔 함. -> 보안상 설정
+                // RN에서는 상관 없지만 크롬에서 동작 하는 것들은 preflight 사전점검요청 (OPTIONS)에 대한 CORS 허용 설정을 추가해줘야함.
+
+                .csrf().disable() // 부적적한 스크립트 삽입 공격을 방지
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //JWT토큰 사용을 위해서 세션 비활성화
             .and()
                 .formLogin().disable() //우리는 시큐리티 디폴트 로그인화면을 사용하지 않음.
-
                 // 하지만 로그인 시도를 캐치해줄 수 있는 다른 녀석을 만들어 줘야함.
                 .httpBasic().disable()
+                //로그인 시도를 캐치하는 JwtAuthenticationFilter (인증)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 // AuthenticationManager 이녀석은 로그인 매니져라고 생각하면 되며, JwtAuthenticationFilter 이녀석이 로그인 수행 필터이기 때문에
                 // 매니저와 함께 해야 하므로 JwtAuthenticationFilter를 던져주면 된다.
+
+                // 토큰을 가지고 기능을 수행할때 캐치하는 JwtAuthorizationFilter(인가)
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
                 // JwtAuthorizationFilter 로그인 할 당시 클라이언트에게 준 토큰을 이용해 이후 요청이 들어오면 토큰이 유효한
                 // 토큰인지를 검사해서 토큰에 해당하는 유저정보를 검색해준다. 유저 정보에 접근하기 위해 userRepository를 실어준다
+
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll() //api 사용을 허용
                 .antMatchers("/h2-console/**").permitAll() //h2 콘솔 사용을 허용
-                .antMatchers("/**").permitAll() //
+                .antMatchers("/**").permitAll() //혹시 몰라서 추가 해줌
 
                 .anyRequest().authenticated();// antMatchers 로 허용한 요청 외에는 모두 인증 요구
-
 
     }
 
